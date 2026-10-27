@@ -2,6 +2,8 @@
 
 45-minute technical conference slide deck (49 slides across 10 sections) powered by **[Reveal.js](https://github.com/hakimel/reveal.js/)** and written in Markdown (`slides.md`), presenting **[Google Cloud Scion](https://github.com/GoogleCloudPlatform/scion)** ([Documentation](https://googlecloudplatform.github.io/scion/overview/)).
 
+**Live Slides (GitHub Pages):** **[https://laurentgrangeau.github.io/conf-scion/](https://laurentgrangeau.github.io/conf-scion/)**
+
 ## Abstract
 
 > We’ve all written that slightly cobbled-together Python script at some point to get two LLMs to chat with each other. It’s fun locally, but for a real production pipeline, it’s a nightmare! The era of DIY GenAI is over: make way for distributed multi-agent systems.
