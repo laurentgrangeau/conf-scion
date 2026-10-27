@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1160 420" width="100%" height="100%">
+
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#090d16" stop-opacity="0.98"/>
+    </linearGradient>
+    <linearGradient id="blueCard" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e3a8a" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#0f172a" stop-opacity="0.9"/>
+    </linearGradient>
+    <linearGradient id="cyanCard" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0c4a6e" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#0f172a" stop-opacity="0.9"/>
+    </linearGradient>
+    <linearGradient id="greenCard" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#14532d" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#0f172a" stop-opacity="0.9"/>
+    </linearGradient>
+    <linearGradient id="amberCard" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#713f12" stop-opacity="0.38"/>
+      <stop offset="100%" stop-color="#0f172a" stop-opacity="0.9"/>
+    </linearGradient>
+    <linearGradient id="redCard" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7f1d1d" stop-opacity="0.38"/>
+      <stop offset="100%" stop-color="#0f172a" stop-opacity="0.9"/>
+    </linearGradient>
+    <filter id="shadow" x="-8%" y="-8%" width="116%" height="116%">
+      <feDropShadow dx="0" dy="5" stdDeviation="6" flood-color="#000000" flood-opacity="0.45"/>
+    </filter>
+    <marker id="arrowCyan" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#38bdf8"/>
+    </marker>
+    <marker id="arrowBlue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#4285f4"/>
+    </marker>
+    <marker id="arrowGreen" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#34a853"/>
+    </marker>
+    <marker id="arrowAmber" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#fbbc04"/>
+    </marker>
+    <style>
+      .title { font-family: "Space Grotesk", "Inter", system-ui, sans-serif; font-weight: 700; fill: #ffffff; }
+      .sub { font-family: "Inter", system-ui, sans-serif; font-weight: 500; fill: #cbd5e1; }
+      .muted { font-family: "Inter", system-ui, sans-serif; font-weight: 400; fill: #94a3b8; }
+      .mono { font-family: "JetBrains Mono", "Fira Code", monospace; font-weight: 600; fill: #7dd3fc; }
+      .badge { font-family: "Inter", system-ui, sans-serif; font-weight: 700; font-size: 11px; letter-spacing: 0.04em; }
+    </style>
+  </defs>
+
+  <rect x="4" y="4" width="1152" height="412" rx="16" fill="url(#bgGrad)" stroke="#334155" stroke-width="1.5"/>
+
+  <!-- Top Box: Scion Hub -->
+  <g filter="url(#shadow)">
+    <rect x="180" y="20" width="800" height="78" rx="12" fill="url(#cyanCard)" stroke="#38bdf8" stroke-width="2"/>
+    <text x="580" y="50" text-anchor="middle" class="title" font-size="20">Scion Hub (Control Plane  •  State DB  •  SSE Web UI  •  Message Bus)</text>
+    <text x="580" y="76" text-anchor="middle" class="sub" font-size="14">Authenticates Users (Cloud IAP)  •  Provisions Worktrees  •  Dispatches to Runtime Brokers</text>
+  </g>
+
+  <path d="M580 98 L580 138" stroke="#38bdf8" stroke-width="2.5" marker-end="url(#arrowCyan)"/>
+  <rect x="470" y="106" width="220" height="22" rx="11" fill="#090d16" stroke="#38bdf8"/>
+  <text x="580" y="121" text-anchor="middle" class="badge" fill="#38bdf8">SPAWNS &amp; GOVERNS</text>
+
+  <!-- Middle Box: Manager Agent -->
+  <g filter="url(#shadow)">
+    <rect x="220" y="142" width="720" height="86" rx="12" fill="url(#blueCard)" stroke="#4285f4" stroke-width="2"/>
+    <rect x="240" y="156" width="112" height="22" rx="11" fill="#1e3a8a" stroke="#60a5fa"/>
+    <text x="296" y="171" text-anchor="middle" class="badge" fill="#93c5fd">MANAGER ROLE</text>
+    <text x="580" y="174" text-anchor="middle" class="title" font-size="19">Lead Architect Agent  —  Harness: <tspan class="mono" fill="#7dd3fc">antigravity</tspan></text>
+    <text x="580" y="204" text-anchor="middle" class="sub" font-size="14">Decomposes Epic  •  Calls Scion Hub API to Spawn Workers  •  Reviews Branch Diffs  •  Merges</text>
+  </g>
+
+  <!-- Fan-out connectors -->
+  <path d="M580 228 L580 278" stroke="#34a853" stroke-width="2.5" marker-end="url(#arrowGreen)"/>
+  <path d="M420 228 L200 278" stroke="#34a853" stroke-width="2.5" marker-end="url(#arrowGreen)"/>
+  <path d="M740 228 L960 278" stroke="#34a853" stroke-width="2.5" marker-end="url(#arrowGreen)"/>
+  <rect x="415" y="242" width="330" height="22" rx="11" fill="#090d16" stroke="#34a853"/>
+  <text x="580" y="257" text-anchor="middle" class="badge" fill="#86efac">DISPATCHES ISOLATED WORKER PODS IN PARALLEL</text>
+
+  <!-- Worker 1 -->
+  <g filter="url(#shadow)">
+    <rect x="36" y="282" width="336" height="114" rx="12" fill="url(#greenCard)" stroke="#34a853" stroke-width="2"/>
+    <text x="204" y="312" text-anchor="middle" class="title" font-size="17">Worker 1: Sec-Auditor</text>
+    <text x="204" y="338" text-anchor="middle" class="mono" font-size="14">Harness: antigravity</text>
+    <text x="204" y="360" text-anchor="middle" class="sub" font-size="13">Worktree: <tspan class="mono">wt/sec-audit</tspan></text>
+    <text x="204" y="382" text-anchor="middle" class="muted" font-size="12.5">Skill: sast-audit • Fixes SQLi &amp; CVEs</text>
+  </g>
+
+  <!-- Worker 2 -->
+  <g filter="url(#shadow)">
+    <rect x="412" y="282" width="336" height="114" rx="12" fill="url(#greenCard)" stroke="#34a853" stroke-width="2"/>
+    <text x="580" y="312" text-anchor="middle" class="title" font-size="17">Worker 2: API-Refactor</text>
+    <text x="580" y="338" text-anchor="middle" class="mono" font-size="14">Harness: gemini-cli</text>
+    <text x="580" y="360" text-anchor="middle" class="sub" font-size="13">Worktree: <tspan class="mono">wt/api-v2</tspan></text>
+    <text x="580" y="382" text-anchor="middle" class="muted" font-size="12.5">Skill: grpc-gen • REST → gRPC v2</text>
+  </g>
+
+  <!-- Worker 3 -->
+  <g filter="url(#shadow)">
+    <rect x="788" y="282" width="336" height="114" rx="12" fill="url(#greenCard)" stroke="#34a853" stroke-width="2"/>
+    <text x="956" y="312" text-anchor="middle" class="title" font-size="17">Worker 3: QA-Verifier</text>
+    <text x="956" y="338" text-anchor="middle" class="mono" font-size="14">Harness: gemini-cli</text>
+    <text x="956" y="360" text-anchor="middle" class="sub" font-size="13">Worktree: <tspan class="mono">wt/qa-e2e</tspan></text>
+    <text x="956" y="382" text-anchor="middle" class="muted" font-size="12.5">Skill: race-harness • Concurrency Suite</text>
+  </g>
+</svg>

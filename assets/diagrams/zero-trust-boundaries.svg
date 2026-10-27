@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1160 350" width="100%" height="100%">
+
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#090d16" stop-opacity="0.98"/>
+    </linearGradient>
+    <linearGradient id="blueCard" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e3a8a" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#0f172a" stop-opacity="0.9"/>
+    </linearGradient>
+    <linearGradient id="cyanCard" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0c4a6e" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#0f172a" stop-opacity="0.9"/>
+    </linearGradient>
+    <linearGradient id="greenCard" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#14532d" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#0f172a" stop-opacity="0.9"/>
+    </linearGradient>
+    <linearGradient id="amberCard" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#713f12" stop-opacity="0.38"/>
+      <stop offset="100%" stop-color="#0f172a" stop-opacity="0.9"/>
+    </linearGradient>
+    <filter id="shadow" x="-8%" y="-8%" width="116%" height="116%">
+      <feDropShadow dx="0" dy="5" stdDeviation="6" flood-color="#000000" flood-opacity="0.45"/>
+    </filter>
+    <marker id="arrowCyan" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#38bdf8"/>
+    </marker>
+    <marker id="arrowGreen" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#34a853"/>
+    </marker>
+    <style>
+      .title { font-family: "Space Grotesk", "Inter", system-ui, sans-serif; font-weight: 700; fill: #ffffff; }
+      .sub { font-family: "Inter", system-ui, sans-serif; font-weight: 500; fill: #cbd5e1; }
+      .muted { font-family: "Inter", system-ui, sans-serif; font-weight: 400; fill: #94a3b8; }
+      .mono { font-family: "JetBrains Mono", "Fira Code", monospace; font-weight: 600; fill: #7dd3fc; }
+      .badge { font-family: "Inter", system-ui, sans-serif; font-weight: 700; font-size: 11px; letter-spacing: 0.04em; }
+    </style>
+  </defs>
+
+  <rect x="4" y="4" width="1152" height="342" rx="16" fill="url(#bgGrad)" stroke="#334155" stroke-width="1.5"/>
+
+  <!-- Boundary 1 -->
+  <g filter="url(#shadow)">
+    <rect x="32" y="30" width="336" height="290" rx="14" fill="url(#cyanCard)" stroke="#38bdf8" stroke-width="2"/>
+    <rect x="52" y="48" width="144" height="24" rx="12" fill="#0c4a6e" stroke="#38bdf8"/>
+    <text x="124" y="64" text-anchor="middle" class="badge" fill="#7dd3fc">BOUNDARY 1: EDGE</text>
+    <text x="200" y="106" text-anchor="middle" class="title" font-size="19">Human → Scion Hub</text>
+    <text x="200" y="136" text-anchor="middle" class="mono" font-size="14" fill="#38bdf8">Cloud IAP + Hub RBAC</text>
+    <line x1="60" y1="154" x2="340" y2="154" stroke="#334155" stroke-width="1"/>
+    <text x="60" y="184" class="sub" font-size="13.5">• Google Workspace OAuth2 + MFA</text>
+    <text x="60" y="212" class="sub" font-size="13.5">• Zero unauthenticated Hub access</text>
+    <text x="60" y="240" class="sub" font-size="13.5">• Grove-level ACLs per team</text>
+    <text x="60" y="268" class="sub" font-size="13.5">• Full audit log of CLI &amp; UI actions</text>
+  </g>
+
+  <path d="M368 175 L412 175" stroke="#38bdf8" stroke-width="2.5" marker-end="url(#arrowCyan)"/>
+
+  <!-- Boundary 2 -->
+  <g filter="url(#shadow)">
+    <rect x="412" y="30" width="336" height="290" rx="14" fill="url(#blueCard)" stroke="#4285f4" stroke-width="2"/>
+    <rect x="432" y="48" width="166" height="24" rx="12" fill="#1e3a8a" stroke="#60a5fa"/>
+    <text x="515" y="64" text-anchor="middle" class="badge" fill="#93c5fd">BOUNDARY 2: CONTROL</text>
+    <text x="580" y="106" text-anchor="middle" class="title" font-size="19">Hub → Runtime Broker</text>
+    <text x="580" y="136" text-anchor="middle" class="mono" font-size="14" fill="#93c5fd">mTLS &amp; Scoped Leases</text>
+    <line x1="440" y1="154" x2="720" y2="154" stroke="#334155" stroke-width="1"/>
+    <text x="440" y="184" class="sub" font-size="13.5">• Signed Broker registration tokens</text>
+    <text x="440" y="212" class="sub" font-size="13.5">• Isolated GKE namespace per Hub</text>
+    <text x="440" y="240" class="sub" font-size="13.5">• Ephemeral secret projection only</text>
+    <text x="440" y="268" class="sub" font-size="13.5">• Automatic lease heartbeat &amp; expiry</text>
+  </g>
+
+  <path d="M748 175 L792 175" stroke="#34a853" stroke-width="2.5" marker-end="url(#arrowGreen)"/>
+
+  <!-- Boundary 3 -->
+  <g filter="url(#shadow)">
+    <rect x="792" y="30" width="336" height="290" rx="14" fill="url(#greenCard)" stroke="#34a853" stroke-width="2"/>
+    <rect x="812" y="48" width="166" height="24" rx="12" fill="#14532d" stroke="#4ade80"/>
+    <text x="895" y="64" text-anchor="middle" class="badge" fill="#86efac">BOUNDARY 3: SANDBOX</text>
+    <text x="960" y="106" text-anchor="middle" class="title" font-size="19">Agent Pod → Network</text>
+    <text x="960" y="136" text-anchor="middle" class="mono" font-size="14" fill="#86efac">K8s NetworkPolicy + WI</text>
+    <line x1="820" y1="154" x2="1100" y2="154" stroke="#334155" stroke-width="1"/>
+    <text x="820" y="184" class="sub" font-size="13.5">• Denies Pod-to-Pod lateral traffic</text>
+    <text x="820" y="212" class="sub" font-size="13.5">• Blocks RFC1918 private VPC ranges</text>
+    <text x="820" y="240" class="sub" font-size="13.5">• Allows Vertex AI via Workload ID</text>
+    <text x="820" y="268" class="sub" font-size="13.5">• Zero raw API keys inside Pod env</text>
+  </g>
+</svg>

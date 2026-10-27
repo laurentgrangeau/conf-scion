@@ -1,0 +1,109 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1160 430" width="100%" height="100%">
+
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#090d16" stop-opacity="0.98"/>
+    </linearGradient>
+    <linearGradient id="blueCard" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e3a8a" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#0f172a" stop-opacity="0.9"/>
+    </linearGradient>
+    <linearGradient id="cyanCard" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0c4a6e" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#0f172a" stop-opacity="0.9"/>
+    </linearGradient>
+    <linearGradient id="greenCard" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#14532d" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#0f172a" stop-opacity="0.9"/>
+    </linearGradient>
+    <linearGradient id="amberCard" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#713f12" stop-opacity="0.38"/>
+      <stop offset="100%" stop-color="#0f172a" stop-opacity="0.9"/>
+    </linearGradient>
+    <linearGradient id="redCard" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7f1d1d" stop-opacity="0.38"/>
+      <stop offset="100%" stop-color="#0f172a" stop-opacity="0.9"/>
+    </linearGradient>
+    <filter id="shadow" x="-8%" y="-8%" width="116%" height="116%">
+      <feDropShadow dx="0" dy="5" stdDeviation="6" flood-color="#000000" flood-opacity="0.45"/>
+    </filter>
+    <marker id="arrowCyan" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#38bdf8"/>
+    </marker>
+    <marker id="arrowBlue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#4285f4"/>
+    </marker>
+    <marker id="arrowGreen" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#34a853"/>
+    </marker>
+    <marker id="arrowAmber" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#fbbc04"/>
+    </marker>
+    <style>
+      .title { font-family: "Space Grotesk", "Inter", system-ui, sans-serif; font-weight: 700; fill: #ffffff; }
+      .sub { font-family: "Inter", system-ui, sans-serif; font-weight: 500; fill: #cbd5e1; }
+      .muted { font-family: "Inter", system-ui, sans-serif; font-weight: 400; fill: #94a3b8; }
+      .mono { font-family: "JetBrains Mono", "Fira Code", monospace; font-weight: 600; fill: #7dd3fc; }
+      .badge { font-family: "Inter", system-ui, sans-serif; font-weight: 700; font-size: 11px; letter-spacing: 0.04em; }
+    </style>
+  </defs>
+
+  <rect x="4" y="4" width="1152" height="422" rx="16" fill="url(#bgGrad)" stroke="#334155" stroke-width="1.5"/>
+
+  <!-- Layer 1: Engineers + Cloud IAP -->
+  <g filter="url(#shadow)">
+    <rect x="190" y="18" width="780" height="64" rx="12" fill="url(#amberCard)" stroke="#fbbc04" stroke-width="2"/>
+    <text x="580" y="46" text-anchor="middle" class="title" font-size="18">Engineers (<tspan class="mono" fill="#fde047">scion</tspan> CLI &amp; Web UI)  →  Global HTTPS LB + Cloud IAP</text>
+    <text x="580" y="68" text-anchor="middle" class="sub" font-size="13">Google Workspace OAuth2 / OIDC  •  MFA Enforced at Edge  •  TLS Termination</text>
+  </g>
+
+  <path d="M580 82 L580 120" stroke="#fbbc04" stroke-width="2.5" marker-end="url(#arrowAmber)"/>
+
+  <!-- Layer 2: Cloud Run Stateless Hub -->
+  <g filter="url(#shadow)">
+    <rect x="140" y="124" width="880" height="82" rx="12" fill="url(#cyanCard)" stroke="#38bdf8" stroke-width="2"/>
+    <rect x="160" y="138" width="124" height="22" rx="11" fill="#0c4a6e" stroke="#38bdf8"/>
+    <text x="222" y="153" text-anchor="middle" class="badge" fill="#7dd3fc">CLOUD RUN (HA)</text>
+    <text x="610" y="156" text-anchor="middle" class="title" font-size="19">Replicated Stateless Scion Hub Instances (Min 2 – Auto-Scaled)</text>
+    <text x="580" y="184" text-anchor="middle" class="sub" font-size="13.5">Direct VPC Egress / Connector  •  GCP Secret Manager Injection  •  SSE Real-Time Event Bus</text>
+  </g>
+
+  <!-- 3-Way Connectors to Backend Plane -->
+  <path d="M360 206 L204 258" stroke="#38bdf8" stroke-width="2.5" marker-end="url(#arrowCyan)"/>
+  <path d="M580 206 L580 258" stroke="#34a853" stroke-width="2.5" marker-end="url(#arrowGreen)"/>
+  <path d="M800 206 L956 258" stroke="#38bdf8" stroke-width="2.5" marker-end="url(#arrowCyan)"/>
+
+  <!-- Backend 1: Cloud SQL -->
+  <g filter="url(#shadow)">
+    <rect x="32" y="262" width="344" height="142" rx="12" fill="url(#blueCard)" stroke="#4285f4" stroke-width="2"/>
+    <text x="204" y="294" text-anchor="middle" class="title" font-size="18" fill="#93c5fd">Cloud SQL (PostgreSQL)</text>
+    <text x="204" y="320" text-anchor="middle" class="sub" font-size="13.5">Regional High Availability DB</text>
+    <text x="204" y="346" text-anchor="middle" class="muted" font-size="12.5">• Groves, Agents &amp; Users</text>
+    <text x="204" y="368" text-anchor="middle" class="muted" font-size="12.5">• Broker Leases &amp; Audit Events</text>
+    <text x="204" y="390" text-anchor="middle" class="mono" font-size="12">Private IP inside Shared VPC</text>
+  </g>
+
+  <!-- Backend 2: GKE Autopilot -->
+  <g filter="url(#shadow)">
+    <rect x="408" y="262" width="344" height="142" rx="12" fill="url(#greenCard)" stroke="#34a853" stroke-width="2"/>
+    <text x="580" y="294" text-anchor="middle" class="title" font-size="18" fill="#86efac">GKE Autopilot Cluster</text>
+    <text x="580" y="320" text-anchor="middle" class="sub" font-size="13.5">Runtime Broker + Agent Pods</text>
+    <text x="580" y="346" text-anchor="middle" class="mono" font-size="12.5">antigravity &amp; gemini-cli Pods</text>
+    <text x="580" y="368" text-anchor="middle" class="muted" font-size="12.5">• Keyless GKE Workload Identity</text>
+    <text x="580" y="390" text-anchor="middle" class="mono" font-size="12" fill="#86efac">→ Vertex AI (Gemini Models)</text>
+  </g>
+
+  <!-- Backend 3: Cloud Filestore + GCS -->
+  <g filter="url(#shadow)">
+    <rect x="784" y="262" width="344" height="142" rx="12" fill="url(#blueCard)" stroke="#38bdf8" stroke-width="2"/>
+    <text x="956" y="294" text-anchor="middle" class="title" font-size="18" fill="#7dd3fc">Cloud Filestore + GCS</text>
+    <text x="956" y="320" text-anchor="middle" class="sub" font-size="13.5">Regional NFS (ReadWriteMany)</text>
+    <text x="956" y="346" text-anchor="middle" class="muted" font-size="12.5">• Shared Git Worktrees across Pods</text>
+    <text x="956" y="368" text-anchor="middle" class="muted" font-size="12.5">• GCS Bucket for Templates &amp; Logs</text>
+    <text x="956" y="390" text-anchor="middle" class="mono" font-size="12">PVC: scion-workspaces-rwx</text>
+  </g>
+
+  <!-- Horizontal RWX mount link between GKE and Filestore -->
+  <path d="M752 334 L784 334" stroke="#38bdf8" stroke-width="2.5" stroke-dasharray="4,3"/>
+</svg>
