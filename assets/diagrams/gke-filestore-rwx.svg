@@ -47,7 +47,7 @@
     <rect x="142" y="36" width="150" height="22" rx="11" fill="#0c4a6e" stroke="#38bdf8"/>
     <text x="217" y="51" text-anchor="middle" class="badge" fill="#7dd3fc">CLOUD FILESTORE</text>
     <text x="610" y="54" text-anchor="middle" class="title" font-size="19">Regional NFS Volume  —  Kubernetes PVC (<tspan class="mono">ReadWriteMany</tspan>)</text>
-    <text x="580" y="82" text-anchor="middle" class="mono" font-size="13.5">/scion-groves/order-service/.scion/worktrees/{lead-mgr, sec-patch, grpc-mig}</text>
+    <text x="580" y="82" text-anchor="middle" class="mono" font-size="13">/scion-projects/order-service/.scion/agents/{lead-mgr, sec-patch, grpc-mig}/workspace</text>
     <text x="580" y="102" text-anchor="middle" class="muted" font-size="12">Persists across Pod restarts and GKE Autopilot node scale-downs</text>
   </g>
 

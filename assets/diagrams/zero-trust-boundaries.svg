@@ -51,7 +51,7 @@
     <line x1="60" y1="154" x2="340" y2="154" stroke="#334155" stroke-width="1"/>
     <text x="60" y="184" class="sub" font-size="13.5">• Google Workspace OAuth2 + MFA</text>
     <text x="60" y="212" class="sub" font-size="13.5">• Zero unauthenticated Hub access</text>
-    <text x="60" y="240" class="sub" font-size="13.5">• Grove-level ACLs per team</text>
+    <text x="60" y="240" class="sub" font-size="13.5">• Project-level ACLs per team</text>
     <text x="60" y="268" class="sub" font-size="13.5">• Full audit log of CLI &amp; UI actions</text>
   </g>
 

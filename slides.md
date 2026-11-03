@@ -31,7 +31,7 @@ Welcome everyone! Over the next 45 minutes, we are going to tackle one of the bi
     <ol>
       <li><strong>The DIY Multi-Agent Trap</strong> (5 min)</li>
       <li><strong>Scion Philosophy:</strong> Why Scion Exists (5 min)</li>
-      <li><strong>The 8 Core Concepts:</strong> Groves to Hubs (6 min)</li>
+      <li><strong>The 8 Core Concepts:</strong> Projects to Hubs (6 min)</li>
       <li><strong>Supported Harnesses &amp; Worktrees:</strong> <code>antigravity</code> &amp; <code>gemini-cli</code> (4 min)</li>
     </ol>
   </div>
@@ -306,8 +306,8 @@ If you want a simple mental model to take back to your team: **Scion is to auton
 
 <div class="grid-4">
   <div class="card card-blue">
-    <h4>1. Grove</h4>
-    <p>Project-level footprint (<code>.scion/</code>) grouping templates, settings &amp; worktrees.</p>
+    <h4>1. Project</h4>
+    <p>Repo footprint (<code>.scion/</code>) grouping templates, settings &amp; agents.</p>
   </div>
   <div class="card card-green">
     <h4>2. Template</h4>
@@ -327,15 +327,15 @@ If you want a simple mental model to take back to your team: **Scion is to auton
   </div>
   <div class="card card-green">
     <h4>6. Profile</h4>
-    <p>Named config bundling a Runtime, Hub endpoint &amp; environment overrides.</p>
+    <p>Named config in <code>settings.yaml</code> bundling Runtime &amp; environment overrides.</p>
   </div>
   <div class="card card-amber">
     <h4>7. Messaging</h4>
-    <p>Structured pub/sub &amp; direct routing for interjecting and coordinating tasks.</p>
+    <p>Structured delivery (<code>scion message</code> / <code>msg</code>) &amp; A2A coordination.</p>
   </div>
   <div class="card card-red">
     <h4>8. Credentials</h4>
-    <p>Scoped auth via Vertex AI, OAuth keyring, auth files, or Secret Manager.</p>
+    <p>Scoped auth via Vertex AI, OAuth keyring, auth files, or Hub Secrets.</p>
   </div>
 </div>
 
@@ -344,46 +344,46 @@ To master Scion, you only need to understand 8 core concepts (`googlecloudplatfo
 
 --
 
-## Concepts 1 & 2: Groves and Templates
+## Concepts 1 & 2: Projects and Templates
 
 <p class="subtitle">Project footprint (<code>.scion/</code>) and role blueprints (<a href="https://googlecloudplatform.github.io/scion/local/templates/" target="_blank">scion/local/templates</a>)</p>
 
 <div class="grid-2">
   <div class="card card-code">
-    <h3>1. The Grove (<code>.scion/</code>)</h3>
+    <h3>1. The Project (<code>.scion/</code>)</h3>
     <pre><code class="language-plaintext" data-trim>
 my-project/
-└── .scion/            # Project Grove
+└── .scion/            # Project Namespace
     ├── settings.yaml  # Profiles &amp; Runtimes
     ├── templates/     # Role Blueprints
     │   ├── manager/
     │   ├── sec-auditor/
     │   ├── backend-go/
     │   └── qa-engineer/
-    └── worktrees/     # Isolated Worktrees
-        ├── lead-mgr/
-        └── sec-patch/
+    └── agents/        # Local Agent State
+                       # + Isolated Worktrees
     </code></pre>
   </div>
   <div class="card card-code">
     <h3>2. Template (<code>scion-agent.yaml</code>)</h3>
     <pre><code class="language-yaml" data-trim>
 # templates/sec-auditor/scion-agent.yaml
+schema_version: "1"
 default_harness_config: antigravity
 model: gemini-3.1-pro
-thinking_level: high
+thinking_level: 80
 system_prompt: system-prompt.md
 agent_instructions: agents.md
 max_turns: 50
+max_model_calls: 120
 max_duration: "45m"
-telemetry: on
     </code></pre>
   </div>
 </div>
 
 Note:
-- **Grove**: Initialized with `scion init`, the Grove is the `.scion/` directory in your repository (plus global machine defaults in `~/.scion/templates/`).
-- **Template**: A portable blueprint directory containing `scion-agent.yaml`, `agents.md`, `system-prompt.md`, and a `home/` overlay that defines an agent's role!
+- **Project**: Initialized with `scion init`, it creates the `.scion/` directory in your repository (plus global machine defaults in `~/.scion/` via `scion init --machine`) and adds `.scion/agents/` to `.gitignore`.
+- **Template**: A portable blueprint directory containing `scion-agent.yaml` (`schema_version: "1"`), `agents.md`, `system-prompt.md`, and a `home/` overlay that defines an agent's role!
 
 --
 
@@ -433,7 +433,7 @@ In fact, if you put Kubernetes or Docker volume keys inside `scion-agent.yaml`, 
   <div class="card card-green">
     <h3>Automatic Context Projection</h3>
     <ul>
-      <li><strong><code>default_harness_config</code>:</strong> Sets the default harness (e.g. <code>antigravity</code> or <code>gemini</code>), overridable at runtime via <code>--harness</code>.</li>
+      <li><strong><code>default_harness_config</code>:</strong> Sets the default harness config (e.g. <code>antigravity</code> or <code>gemini</code>), overridable at runtime via <code>--harness-config</code>.</li>
       <li><strong><code>agent_instructions</code> Projection:</strong> Scion automatically projects your template's <code>agents.md</code> into the native file each harness expects inside the container (<code>AGENTS.md</code> for Antigravity, <code>GEMINI.md</code> for Gemini CLI).</li>
       <li><strong><code>system_prompt</code> Mapping:</strong> Passed via native CLI flags or mounted into <code>~/.gemini/system_prompt.md</code>.</li>
     </ul>
@@ -470,7 +470,7 @@ During container provisioning, Scion automatically projects `agent_instructions`
   <div class="card card-blue">
     <h4>1. <code>manager</code> Role (Tech Lead)</h4>
     <ul>
-      <li><strong>Harness / Model:</strong> <code>antigravity</code> &bull; <code>thinking_level: high</code></li>
+      <li><strong>Harness / Model:</strong> <code>antigravity</code> &bull; <code>thinking_level: 80</code></li>
       <li><strong>Instructions (<code>agents.md</code>):</strong> Decompose epics, spawn workers via <code>scion start</code>, review worktree diffs, never write feature code directly.</li>
       <li><strong>Skills in <code>home/</code>:</strong> <code>scion-orchestrator</code>, <code>git-rebase-gate</code></li>
     </ul>
@@ -552,7 +552,7 @@ Both `antigravity` and `gemini-cli` use progressive disclosure: they only keep t
     <p>Injected automatically by Scion during container provisioning:</p>
     <ul>
       <li><strong><code>git-sandbox</code>:</strong> Injected for Git workspaces; teaches non-interactive rebase, branch isolation &amp; worktree safety.</li>
-      <li><strong><code>scion-cli</code>:</strong> Teaches status signaling &amp; <code>scion msg</code>.</li>
+      <li><strong><code>sciontool</code> &amp; Messaging:</strong> Teaches status signaling (<code>sciontool status</code>) &amp; <code>scion message</code> (<code>msg</code>).</li>
     </ul>
   </div>
   <div class="card card-amber">
@@ -595,7 +595,8 @@ description: Safe Git operations, non-interactive rebasing, and branch managemen
 2. **Non-Interactive Commands Only:** Always pass `--no-edit` or `-m` to
    `git commit` and `GIT_EDITOR=true` on `git rebase` so tmux never blocks.
 3. **Signal Completion:** After tests pass and changes are committed to your
-   branch, notify the Manager via `scion msg lead-mgr "Branch ready"`.
+   branch, notify the Manager via `scion msg lead-mgr "Branch ready"` and
+   report `sciontool status task_completed "Branch ready for review"`.
 </code></pre>
 
 <div class="callout callout-info">
@@ -647,15 +648,15 @@ Note:
   <div class="card card-green">
     <h3>5. Scion Hub &amp; 6. Profiles</h3>
     <ul>
-      <li><strong>Scion Hub:</strong> Central control plane tracking agent state, hosting the Web UI with real-time Server-Sent Events (SSE), and routing commands to Runtime Brokers.</li>
-      <li><strong>Profiles:</strong> Named configurations in <code>settings.yaml</code> (e.g. <code>local</code> vs <code>gcp-ha</code>) that let you switch your CLI target from local Docker to a remote GKE cluster with a single flag.</li>
+      <li><strong>Scion Hub:</strong> Central control plane tracking agent state, hosting the Web UI with real-time Server-Sent Events (SSE), and routing commands to Runtime Brokers (selected via <code>scion use --hub</code>).</li>
+      <li><strong>Profiles:</strong> Named configurations in <code>settings.yaml</code> (e.g. <code>local</code> vs <code>gcp-ha</code>) that let you switch your container runtime and environment overrides with <code>--profile</code>.</li>
     </ul>
   </div>
   <div class="card card-red">
     <h3>7. Messaging &amp; 8. Credentials</h3>
     <ul>
-      <li><strong>Messaging:</strong> Built-in message bus allowing humans and Manager Agents to <code>interject</code> or <code>enqueue</code> instructions into running agents and receive completion events.</li>
-      <li><strong>Credentials:</strong> First-class support for <strong>Vertex AI</strong> (Workload Identity), OAuth keyrings, auth file mounts, and GCP Secret Manager.</li>
+      <li><strong>Messaging:</strong> Structured message delivery (<code>scion message</code> / <code>scion msg</code>, plus file attachments via <code>--attach</code>) and A2A bridge coordination.</li>
+      <li><strong>Credentials:</strong> Unified auth pipeline supporting <strong>Vertex AI</strong> (ADC / Workload Identity), OAuth keyrings, auth files, and Hub Secrets (<code>scion hub secret set</code>).</li>
     </ul>
   </div>
 </div>
@@ -703,7 +704,7 @@ An engineer starts a Lead Manager agent running `antigravity`. That Manager Agen
       <li><code>codex</code> (OpenAI Codex CLI)</li>
       <li><code>opencode</code> &bull; <code>copilot</code> (GitHub Copilot CLI)</li>
       <li><code>hermes</code> &bull; <code>grok-build</code> (xAI) &bull; <code>muse-code</code> (Meta)</li>
-      <li>Installed on-demand as declarative harness bundles</li>
+      <li>Installed via <code>scion harness-config install harnesses/&lt;name&gt;</code></li>
     </ul>
   </div>
 </div>
@@ -759,27 +760,28 @@ Best of all, both authenticate natively with Google OAuth on our workstations an
     <h3>Bundle Structure</h3>
     <pre><code class="language-plaintext" data-trim>
 harnesses/antigravity/
-├── config.yaml    # Declarative metadata
-└── provision.py   # Container bootstrap
-                   # via scion_harness lib
+├── config.yaml       # Provisioner &amp; capabilities
+├── provision.py      # Container pre-start hook
+├── scion_harness.py  # Shared helper library
+├── Dockerfile        # Harness container image
+└── home/             # Seeded into container ~
     </code></pre>
-    <p style="margin-top: 10px;">Powered by the shared Python library <code>scion_harness</code> for uniform container setup, credential mounting, and lifecycle hooks.</p>
+    <p style="margin-top: 10px;">Managed via <code>scion harness-config install|upgrade|reset|sync</code> across local and Hub scopes.</p>
   </div>
   <div class="card card-code">
-    <h3><code>config.yaml</code> Example</h3>
+    <h3><code>config.yaml</code> &amp; <code>provision.py</code></h3>
     <pre><code class="language-yaml" data-trim>
+# harnesses/antigravity/config.yaml
 name: antigravity
-binary: agy
-default_args: ["--yolo"]
+provisioner:
+  type: container-script
+  command: ./provision.py
+  lib: vendored
+  interface_version: 3
 capabilities:
   resume: true
-  interject: true
-  enqueue: true
   hooks: true
   otel: true
-auth_modes:
-  - vertex_ai
-  - oauth_keyring
     </code></pre>
   </div>
 </div>
@@ -906,30 +908,30 @@ Scion is designed around three progressive run modes: **Workstation Mode**, **Si
   <div class="card">
     <h3>How Workstation Mode Works</h3>
     <ul>
-      <li><strong>Single-Process Combo Server:</strong> Running <code>scion server start</code> launches the Hub API, Web UI, and local Runtime Broker in one process.</li>
+      <li><strong>Single-Process Combo Server:</strong> Running <code>scion server start</code> launches the Hub API, Web UI, and local Runtime Broker on <code>127.0.0.1:8080</code> and registers the <code>local</code> hub.</li>
       <li><strong>Interactive Onboarding Wizard:</strong> Guides you through configuring <code>antigravity</code> / <code>gemini-cli</code> credentials and selecting your container runtime.</li>
-      <li><strong>Direct Worktree Mounts:</strong> Mounts <code>.scion/worktrees/&lt;agent&gt;</code> directly into local Docker, Podman, or Apple Container instances for instant file sync.</li>
+      <li><strong>Direct Worktree Mounts:</strong> Provisions isolated Git worktrees (with <code>.scion/agents/</code> gitignored) mounted into local Docker, Podman, or Apple Container instances.</li>
     </ul>
   </div>
   <div class="card card-code">
     <h3>Quickstart on Your Laptop</h3>
     <pre><code class="language-bash" data-trim>
-# 1. Initialize global &amp; project Grove
+# 1. Initialize global &amp; project config
 $ scion init --machine &amp;&amp; scion init
 # 2. Start local Hub + Broker + Web UI
 $ scion server start
-[scion] Web UI: http://localhost:8080
-[scion] Runtime: docker (local)
+[scion] Web UI: http://127.0.0.1:8080
+[scion] Hub 'local' registered &amp; active
 # 3. Spawn a local antigravity agent
 $ scion start refactor-auth \
     "Extract JWT middleware" \
-    --harness antigravity
+    --harness-config antigravity --attach
     </code></pre>
   </div>
 </div>
 
 Note:
-In **Workstation Mode**, a single developer can get started in 60 seconds. `scion server start` spins up the Hub, the Web UI on `localhost:8080`, and the local Runtime Broker in a single binary. Your worktrees live right inside `.scion/worktrees/` on your laptop SSD.
+In **Workstation Mode**, a single developer can get started in 60 seconds. `scion server start` spins up the Hub, the Web UI on `127.0.0.1:8080`, and the local Runtime Broker in a single binary, automatically registering itself as the `local` hub.
 
 --
 
@@ -1100,15 +1102,18 @@ A brilliant engineering detail in Scion's GCP HA setup is its **Two-Root Terrafo
 ```bash
 # Step 1: Provision Shared GCP Project Infrastructure (Once)
 $ cd deploy/terraform/shared-infra
-$ terraform init && terraform apply -var="project_id=scion-prod-gcp" \
-    -var="region=europe-west1"
+$ terraform init && terraform apply \
+    -var="project_id=scion-prod-gcp" \
+    -var="region=europe-west1" \
+    -var="name_prefix=scion-ha"
 
 # Step 2: Stamp Out an Isolated Team Hub (Repeatable per team)
 $ cd ../hub
 $ terraform init && terraform apply \
+    -var="project_id=scion-prod-gcp" \
+    -var="region=europe-west1" \
     -var="hub_name=payments-team" \
-    -var="iap_allowed_domain=google.com" \
-    -var="default_harness=antigravity"
+    -var="shared_infra_state_bucket=scion-prod-tfstate"
 ```
 
 <div class="callout callout-success">
@@ -1116,7 +1121,7 @@ $ terraform init && terraform apply \
 </div>
 
 Note:
-Here is how clean the operational workflow is: Platform Ops runs `terraform apply` in `deploy/terraform/shared-infra` once. Then any team can run `terraform apply` in `deploy/terraform/hub` with their `hub_name` and `iap_allowed_domain` to get a production-ready, IAP-protected multi-agent cluster.
+Here is how clean the operational workflow is: Platform Ops runs `terraform apply` in `deploy/terraform/shared-infra` once with `project_id`, `region`, and `name_prefix`. Then any team can run `terraform apply` in `deploy/terraform/hub` (or `hub-gke`) with their `hub_name` and `shared_infra_state_bucket` to get a production-ready, IAP-protected multi-agent Hub.
 
 --
 
@@ -1138,32 +1143,34 @@ Scion uses **Cloud Filestore** mounted as a `ReadWriteMany` (RWX) PersistentVolu
 
 --
 
-## Switching from Laptop to GCP HA via Profile
+## Switching from Laptop to GCP HA via Hub & Profile
 
 ```yaml
-# .scion/settings.yaml — Switch from Workstation to GCP HA with --profile
+# .scion/settings.yaml — Runtime & Profile configuration
+schema_version: "1"
 active_profile: gcp-ha
 runtimes:
   local-docker:
     type: docker
-    resources: { cpu: "2.0", memory: "4Gi" }
   gke-autopilot-ha:
     type: kubernetes
     namespace: scion-hub-payments
     service_account: scion-agent-wi-sa
-    workspace_mount: filestore://scion-shared/hub-payments-team
-    resources: { cpu: "4.0", memory: "8Gi" }
 profiles:
-  local:  { runtime: local-docker,     hub: http://localhost:8080 }
-  gcp-ha: { runtime: gke-autopilot-ha, hub: https://scion.corp.example.com }
+  local:
+    runtime: local-docker
+    resources: { requests: { cpu: "1", memory: "2Gi" }, limits: { cpu: "2", memory: "4Gi" } }
+  gcp-ha:
+    runtime: gke-autopilot-ha
+    resources: { requests: { cpu: "2", memory: "4Gi" }, limits: { cpu: "4", memory: "8Gi" } }
 ```
 
 <div class="callout callout-info">
-  <strong>Zero Code Rewrite:</strong> Prototype locally in Workstation Mode (<code>--profile local</code>) and dispatch the exact same <code>antigravity</code> &amp; <code>gemini-cli</code> templates to GKE Autopilot (<code>--profile gcp-ha</code>).
+  <strong>Zero Code Rewrite:</strong> Switch Hub context via <code>scion use --hub gcp-ha</code> and runtime profile via <code>--profile gcp-ha</code> to dispatch the exact same templates to GKE Autopilot.
 </div>
 
 Note:
-And from the developer's perspective, switching from your laptop's Workstation Mode to this entire GCP HA infrastructure requires zero changes to your templates or prompts—just `--profile local` vs `--profile gcp-ha` in `.scion/settings.yaml`.
+And from the developer's perspective, switching from your laptop's Workstation Mode to this entire GCP HA infrastructure requires zero changes to your templates or prompts—just select the remote Hub (`scion use --hub gcp-ha`) and pass `--profile gcp-ha` from `.scion/settings.yaml`.
 
 ---
 
@@ -1229,29 +1236,35 @@ Instead of passing static API keys around in environment variables:
 
 ```yaml
 # 1. Role Guardrails (.scion/templates/sec-auditor/scion-agent.yaml)
+schema_version: "1"
 default_harness_config: antigravity-sec
-max_turns: 40                   # Stop runaway loops -> LIMITS_EXCEEDED
+max_turns: 40                   # Stop runaway loops
+max_model_calls: 100
 max_duration: "30m"
 
-# 2. Harness & Profile Security (.scion/settings.yaml)
+# 2. Harness Config & Hub Secrets (.scion/settings.yaml + scion hub secret)
+schema_version: "1"
 harness_configs:
   antigravity-sec:
     harness: antigravity
     image: europe-west1-docker.pkg.dev/scion-prod/images/agy-sec:latest
-    auth_mode: vertex_ai        # Keyless Vertex AI via Workload Identity
-    inherit_host_env: false     # Never leak host/broker env vars!
-    secrets:
-      - { name: GITHUB_TOKEN, source: gcp-sm://scion-prod/gh-readonly-bot }
+    env:
+      GOOGLE_GENAI_USE_VERTEXAI: "true"
+      GOOGLE_CLOUD_PROJECT: "scion-prod-gcp"
+```
+```bash
+# Inject scoped secret file or token via Scion Hub Secret backend
+$ scion hub secret set GITHUB_TOKEN @/path/to/gh-readonly-bot.token
 ```
 
 <div class="callout callout-info">
-  <strong>Role + Environment Defense:</strong> <code>scion-agent.yaml</code> caps execution turns/duration, while <code>settings.yaml</code> enforces keyless <strong>Vertex AI</strong> auth and scoped Secret Manager tokens.
+  <strong>Role + Environment Defense:</strong> <code>scion-agent.yaml</code> caps execution turns/calls/duration, while <code>settings.yaml</code> and <code>scion hub secret set</code> enforce keyless <strong>Vertex AI</strong> auth and scoped secrets.
 </div>
 
 Note:
 Look at how cleanly Role Guardrails and Environment Security work together:
-1. In `.scion/templates/sec-auditor/scion-agent.yaml`, we cap `max_turns: 40` and `max_duration: "30m"` so a prompt-injected or stuck agent automatically terminates into `LIMITS_EXCEEDED`.
-2. In `.scion/settings.yaml`, `antigravity-sec` locks down the container image, disables host env inheritance, authenticates via Vertex AI Workload Identity, and injects a read-only GitHub bot token from GCP Secret Manager.
+1. In `.scion/templates/sec-auditor/scion-agent.yaml`, we cap `max_turns: 40`, `max_model_calls: 100`, and `max_duration: "30m"` so a prompt-injected or stuck agent automatically terminates.
+2. In `.scion/settings.yaml`, `antigravity-sec` locks down the container image and configures Vertex AI Workload Identity, while `scion hub secret set` manages scoped secrets in the Hub backend.
 
 --
 
@@ -1309,27 +1322,27 @@ And overseeing the entire sprint is `lead-mgr`, a Manager Agent running `antigra
 
 --
 
-## Demo Step 1: Verify GCP HA Infrastructure & Hub
+## Demo Step 1: Register Hub, Authenticate & Check Brokers
 
 ```bash
-# 1. Inspect outputs from Scion's two-root Terraform HA deployment
-$ terraform -chdir=deploy/terraform/shared-infra output
-cloudsql_instance = "scion-ha-pg-europe-west1"
-filestore_share   = "10.128.0.50:/scion_workspaces"
-gke_cluster       = "scion-autopilot-ha"
+# 1. Register & authenticate to our IAP-protected Cloud Run HA Hub
+$ scion hub add gcp-ha https://scion.corp.example.com
+$ scion hub auth login
+$ scion use --hub gcp-ha
+$ scion hub list --check
+NAME    URL                             AUTH           ACTIVE
+local   http://127.0.0.1:8080           authenticated  false
+gcp-ha  https://scion.corp.example.com  authenticated  true
 
-# 2. Authenticate CLI to our IAP-protected Cloud Run HA Hub
-$ scion login https://scion.corp.example.com --iap
-[scion] Authenticated via Cloud IAP (profile: gcp-ha, hub: Cloud Run HA)
-
-$ scion broker list --profile gcp-ha
-BROKER           RUNTIME     CLUSTER              NAMESPACE            STATUS
+# 2. Verify registered GKE Autopilot Runtime Broker health
+$ scion hub brokers list
+NAME             RUNTIME     CLUSTER              NAMESPACE            STATUS
 gke-ha-broker-1  kubernetes  scion-autopilot-ha   scion-hub-payments   HEALTHY
 ```
 
 Note:
-First, let's verify our GCP HA infrastructure provisioned by `deploy/terraform/shared-infra` and `deploy/terraform/hub`. We see our Cloud SQL Postgres instance, our Filestore NFS share, and our GKE Autopilot cluster.
-We run `scion login --iap` to authenticate through Google Cloud IAP, and `scion broker list` confirms our GKE Runtime Broker is `HEALTHY`.
+First, let's connect our CLI to the GCP HA Hub provisioned by `deploy/terraform/shared-infra` and `deploy/terraform/hub`.
+We register the Hub endpoint with `scion hub add gcp-ha https://scion.corp.example.com`, sign in interactively via `scion hub auth login` (which runs the OAuth 2.0 PKCE flow), switch our active context with `scion use --hub gcp-ha`, and verify auth with `scion hub list --check`. Finally, `scion hub brokers list` confirms our GKE Runtime Broker is `HEALTHY`.
 
 --
 
@@ -1338,17 +1351,17 @@ We run `scion login --iap` to authenticate through Google Cloud IAP, and `scion 
 ```bash
 # 1. Spawn Lead Manager Agent (antigravity) on GKE Autopilot
 $ scion start lead-mgr "Coordinate v2.4 release sprint" \
-    --harness antigravity --template manager --profile gcp-ha
+    --type manager --harness-config antigravity --profile gcp-ha
 
 # 2. Dispatch Specialized Worker Fleet in parallel across GKE Pods
 $ scion start sec-patch "Fix SQLi in checkout & add rate limit" \
-    --harness antigravity --template sec-auditor --profile gcp-ha
+    --type sec-auditor --harness-config antigravity --profile gcp-ha
 
 $ scion start grpc-mig  "Migrate REST order handlers to gRPC v2" \
-    --harness gemini-cli  --template backend-go  --profile gcp-ha
+    --type backend-go  --harness-config gemini      --profile gcp-ha
 
 $ scion start qa-chaos  "Write go test -race concurrency suite" \
-    --harness gemini-cli  --template qa-engineer --profile gcp-ha
+    --type qa-engineer --harness-config gemini      --profile gcp-ha
 ```
 
 <div class="callout callout-success">
@@ -1356,62 +1369,69 @@ $ scion start qa-chaos  "Write go test -race concurrency suite" \
 </div>
 
 Note:
-Next, we launch our 4 agents with `--profile gcp-ha`. Notice how fast that is—each `scion start` call hits the Cloud Run Hub, creates an isolated Git worktree on Cloud Filestore (`scion/lead-mgr`, `scion/sec-patch`, `scion/grpc-mig`, `scion/qa-chaos`), and schedules a Pod on GKE Autopilot with Vertex AI Workload Identity.
+Next, we launch our 4 agents using `scion start <name> "<task>"` with `--type` (selecting the template role), `--harness-config` (`antigravity` or `gemini`), and `--profile gcp-ha`. Each `scion start` call hits the Cloud Run Hub, creates an isolated Git worktree on Cloud Filestore, and schedules a Pod on GKE Autopilot with Vertex AI Workload Identity.
 
 --
 
-## Demo Step 3: Live Fleet Inspection, Interject & Attach
+## Demo Step 3: Live Fleet Inspection, Message & Attach
 
 ```bash
-$ scion list --profile gcp-ha
-NAME       STATUS   HARNESS      GKE POD               PROGRESS
-lead-mgr   RUNNING  antigravity  agent-lead-mgr-7f9b   Monitoring 3 workers
-sec-patch  RUNNING  antigravity  agent-sec-patch-4c2d  Patched SQLi, running gosec
-grpc-mig   RUNNING  gemini-cli   agent-grpc-mig-9a1e   protoc done, editing server
-qa-chaos   WAITING  gemini-cli   agent-qa-chaos-3b8f   Asks: Redis mock or Pod?
+$ scion list   # (or: scion ps)
+NAME       STATUS              HARNESS      BROKER           TASK
+lead-mgr   RUNNING             antigravity  gke-ha-broker-1  Coordinate v2.4 release sprint
+sec-patch  RUNNING             antigravity  gke-ha-broker-1  Fix SQLi in checkout & add rate limit
+grpc-mig   RUNNING             gemini       gke-ha-broker-1  Migrate REST order handlers to gRPC v2
+qa-chaos   WAITING_FOR_INPUT   gemini       gke-ha-broker-1  Asks: Redis mock or container?
 
-# Interject real-time guidance into qa-chaos's GKE Pod
+# Send asynchronous guidance to qa-chaos's running GKE Pod (scion message / msg)
 $ scion msg qa-chaos "Use miniredis in-memory inside your Pod for zero flakiness"
 
-# Attach live to grpc-mig's remote tmux session over the HA Hub
-$ scion attach grpc-mig --profile gcp-ha
+# Inspect recent terminal output or attach live to grpc-mig's remote tmux session
+$ scion look grpc-mig
+$ scion attach grpc-mig
 ```
 
 Note:
-When we run `scion list --profile gcp-ha`, we see all 4 GKE Pods working simultaneously!
-Notice that `qa-chaos` (`gemini-cli`) is in `WAITING` status asking whether to use a Redis mock or container. Using Scion's unified **Interject** capability (`scion msg`), we send it guidance in real time without restarting the Pod. And with `scion attach`, we stream `grpc-mig`'s live `tmux` session straight from GKE to our terminal!
+When we run `scion list` (or its alias `scion ps`), we see all 4 GKE Pods working simultaneously!
+Notice that `qa-chaos` called `sciontool status ask_user` inside its container, placing it in `WAITING_FOR_INPUT` status. Using `scion msg` (alias for `scion message`), we send it guidance in real time without restarting the Pod. And with `scion look` or `scion attach`, we can inspect or attach live to `grpc-mig`'s remote `tmux` session on GKE!
 
 --
 
-## Demo Step 4: Agent-to-Agent Coordination & OTel Traces
+## Demo Step 4: Agent Lifecycle Logs, `sciontool` & OTel Traces
 
 ```bash
-# Stream structured Messaging & OpenTelemetry events from the HA Hub
-$ scion events --profile gcp-ha --follow
-10:34:12 [MSG]  sec-patch -> lead-mgr: "SQLi fixed; gosec 0 issues"
-10:34:15 [OTEL] sec-patch (antigravity): vertex_ai.gemini-3.1-pro (18.4k tok)
-10:34:29 [MSG]  grpc-mig  -> lead-mgr: "OrderService v2 proto + 14 RPCs green"
-10:34:41 [MSG]  qa-chaos  -> lead-mgr: "go test -race -count=100 PASS"
-10:34:45 [HOOK] lead-mgr: Running pre-merge check on Filestore worktrees...
+# Inspect correlated agent lifecycle & hook logs from the Hub
+$ scion logs sec-patch
+10:34:10 [sciontool:hook]   BeforeTool(shell): running "gosec ./..."
+10:34:12 [sciontool:log]    INFO: Parameterized checkout query; gosec 0 issues
+10:34:15 [sciontool:otel]   span=vertex_ai.generate_content model=gemini-3.1-pro tokens=18420
+10:34:18 [sciontool:status] task_completed: "SQLi fixed & rate-limit middleware added"
+
+$ scion logs grpc-mig
+10:34:29 [sciontool:status] task_completed: "OrderService v2 proto + 14 RPCs green"
+
+$ scion logs qa-chaos
+10:34:41 [sciontool:status] task_completed: "go test -race -count=100 PASS"
 ```
 
 <div class="callout callout-info">
-  <strong>Full Fleet Observability:</strong> Every message, lifecycle hook, and Vertex AI model invocation is streamed via Server-Sent Events (SSE) to the Scion Web UI and exported via <strong>OpenTelemetry</strong> to Google Cloud Trace.
+  <strong>Full Fleet Observability:</strong> Inside each container, <code>sciontool</code> (<code>status</code>, <code>hook</code>, <code>log</code>) emits structured OpenTelemetry log records correlated with <strong>Google Cloud Trace</strong> spans and streamed to the Hub Web UI.
 </div>
 
 Note:
-Let's watch `scion events --profile gcp-ha --follow` (or look at the Scion Web UI). We see the workers messaging `lead-mgr` over the Scion Messaging bus as they complete their tasks, alongside OpenTelemetry metrics tracking Vertex AI token usage and tool execution latency across every Pod.
+With `scion logs <agent-name>` (and the Scion Web UI dashboard), we see the structured lifecycle events emitted by `/usr/local/bin/sciontool` inside each container (`sciontool hook`, `sciontool log`, and `sciontool status task_completed`), automatically correlated with OpenTelemetry traces in Google Cloud Trace!
 
 --
 
 ## Demo Step 5: Automated Rebase & Clean Merge
 
 ```bash
-$ scion logs lead-mgr --tail 4 --profile gcp-ha
+$ scion look lead-mgr
 [lead-mgr] Verified 'scion/sec-patch' (gosec PASS, unit tests PASS)
 [lead-mgr] Verified 'scion/grpc-mig'  (buf lint PASS, gRPC tests PASS)
 [lead-mgr] Verified 'scion/qa-chaos'  (race detector PASS)
 [lead-mgr] Rebased all 3 onto 'scion/release-v2.4' (482 PASS, 0 CVEs)
+[sciontool] status -> task_completed: "Release branch scion/release-v2.4 ready"
 
 $ git fetch origin scion/release-v2.4
 $ git diff --stat main..origin/scion/release-v2.4
@@ -1423,7 +1443,7 @@ $ git diff --stat main..origin/scion/release-v2.4
 ```
 
 Note:
-Once all three workers report green, our `lead-mgr` (`antigravity`) agent inspects their Filestore worktree branches, rebases `scion/sec-patch`, `scion/grpc-mig`, and `scion/qa-chaos` onto a unified release branch `scion/release-v2.4`, runs the full 482-test suite, and pushes a clean branch ready for human PR approval!
+Once all three workers report `task_completed`, we run `scion look lead-mgr` to view our Lead Manager (`antigravity`) terminal output: it inspects their Filestore worktree branches, rebases `scion/sec-patch`, `scion/grpc-mig`, and `scion/qa-chaos` onto a unified release branch `scion/release-v2.4`, runs the full 482-test suite, and pushes a clean branch ready for human PR approval!
 
 ---
 
@@ -1488,13 +1508,13 @@ Instead of fragile prompt constraints and `.git/index.lock` crashes on a laptop,
 # 1. Start locally in Workstation Mode
 scion init --machine &amp;&amp; scion init
 scion server start
-# 2. Or deploy GCP HA via Terraform
-cd deploy/terraform/shared-infra
-terraform apply
-cd ../hub &amp;&amp; terraform apply
+# 2. Or connect to a Terraform GCP HA Hub
+scion hub add gcp-ha https://scion.corp.example.com
+scion hub auth login &amp;&amp; scion use --hub gcp-ha
 # 3. Dispatch on GKE Autopilot
-scion start lead "Audit" \
-    --harness antigravity --profile gcp-ha
+scion start lead "Audit codebase" \
+    --type sec-auditor --harness-config antigravity \
+    --profile gcp-ha
     </code></pre>
   </div>
   <div class="card">

@@ -25,12 +25,12 @@
 | **Intro & Roadmap** | 2 | ~2 min | Title & 45-minute session breakdown |
 | **Part 1: The DIY Multi-Agent Trap** | 4 | ~5 min | Why `while True` loops fail, `.git/index.lock` collisions, credential sprawl, Prompting $\rightarrow$ Systems Architecture |
 | **Part 2: Scion Philosophy** | 5 | ~5 min | Agent Agnosticism, **Isolation over Constraints** (`--yolo` inside sandboxes), Multiplayer Collaboration, Kubernetes mental model |
-| **Part 3: Core Concepts, Template Roles & Skills** | 12 | ~8 min | Deep dive into Groves (`.scion/`), **Template Roles** (`scion-agent.yaml`, `system-prompt.md`, `agents.md`, `home/`), **Agent Skills** (`SKILL.md`, progressive disclosure, `git-sandbox` platform skills), Agents, Runtime Brokers, Hub, Profiles, Messaging & Credentials, Manager-Worker graph |
-| **Part 4: Harnesses & Worktrees** | 5 | ~5 min | 9 supported harnesses, deep dive on Google's built-in **`antigravity`** & **`gemini-cli`**, declarative `config.yaml` + `provision.py` bundles, unified capabilities, Git worktree + OCI + `tmux` isolation |
+| **Part 3: Core Concepts, Template Roles & Skills** | 12 | ~8 min | Deep dive into Projects (`.scion/`), **Template Roles** (`scion-agent.yaml`, `system-prompt.md`, `agents.md`, `home/`), **Agent Skills** (`SKILL.md`, progressive disclosure, `git-sandbox` platform skills), Agents, Runtime Brokers, Hub, Profiles, Messaging & Credentials, Manager-Worker graph |
+| **Part 4: Harnesses & Worktrees** | 5 | ~5 min | 9 supported harnesses, deep dive on Google's **`antigravity`** & **`gemini-cli`**, declarative `config.yaml` + `provision.py` (`scion_harness`) bundles, unified capabilities, Git worktree + OCI + `tmux` isolation |
 | **Part 5: Choosing a Run Mode** | 5 | ~4 min | **Workstation Mode**, **Single-Node Hosted Mode** (SQLite), **HA Hosted Mode on GCP**, comparison matrix |
-| **Part 6: GCP HA Architecture** | 5 | ~4 min | Cloud Run + Cloud IAP + Cloud SQL (Postgres) + Cloud Filestore (RWX NFS) + GKE Autopilot, Two-Root Terraform (`shared-infra` & `hub`), switching via `--profile gcp-ha` |
-| **Part 7: Security & Credentials** | 4 | ~4 min | Indirect prompt injection threat model, keyless **Vertex AI** via GKE Workload Identity, GCP Secret Manager, locked-down `scion-agent.yaml`, IAP & K8s `NetworkPolicy` |
-| **Part 8: Live Demo on GCP HA** | 7 | ~6 min | 4-agent `antigravity` & `gemini-cli` Task Force on GKE Autopilot (`scion login --iap`, `scion start`, `scion list`, `scion msg`, `scion attach`, OTel events, automated branch merge) |
+| **Part 6: GCP HA Architecture** | 5 | ~4 min | Cloud Run + Cloud IAP + Cloud SQL (Postgres) + Cloud Filestore (RWX NFS) + GKE Autopilot, Two-Root Terraform (`shared-infra` & `hub`), switching contexts via `scion use --hub` & `--profile` |
+| **Part 7: Security & Credentials** | 4 | ~4 min | Indirect prompt injection threat model, keyless **Vertex AI** via GKE Workload Identity, Hub secrets (`scion hub secret set`) & GCP Secret Manager, locked-down `scion-agent.yaml`, IAP & K8s `NetworkPolicy` |
+| **Part 8: Live Demo on GCP HA** | 7 | ~6 min | 4-agent `antigravity` & `gemini-cli` Task Force on GKE Autopilot (`scion hub add`, `scion hub auth login`, `scion use --hub`, `scion hub brokers list`, `scion start`, `scion list`, `scion msg`, `scion attach`, `scion look`, `scion logs`, automated branch merge) |
 | **Part 9: Wrap-Up & Q&A** | 2 | ~2 min | Architecture comparison & official links |
 
 ---

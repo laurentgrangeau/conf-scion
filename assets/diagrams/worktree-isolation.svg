@@ -69,17 +69,17 @@
   <!-- Middle Column: 3 Dedicated Worktrees -->
   <g filter="url(#shadow)">
     <rect x="386" y="28" width="270" height="86" rx="10" fill="url(#cyanCard)" stroke="#38bdf8" stroke-width="1.8"/>
-    <text x="521" y="56" text-anchor="middle" class="mono" font-size="14">.scion/worktrees/lead-mgr/</text>
+    <text x="521" y="56" text-anchor="middle" class="mono" font-size="12.5">.scion/agents/lead-mgr/workspace/</text>
     <text x="521" y="80" text-anchor="middle" class="sub" font-size="13">Branch: <tspan class="mono" fill="#86efac">scion/lead-mgr</tspan></text>
     <text x="521" y="100" text-anchor="middle" class="muted" font-size="11.5">Dedicated index.lock &amp; working tree</text>
 
     <rect x="386" y="132" width="270" height="86" rx="10" fill="url(#cyanCard)" stroke="#38bdf8" stroke-width="1.8"/>
-    <text x="521" y="160" text-anchor="middle" class="mono" font-size="14">.scion/worktrees/sec-patch/</text>
+    <text x="521" y="160" text-anchor="middle" class="mono" font-size="12.5">.scion/agents/sec-patch/workspace/</text>
     <text x="521" y="184" text-anchor="middle" class="sub" font-size="13">Branch: <tspan class="mono" fill="#86efac">scion/sec-patch</tspan></text>
     <text x="521" y="204" text-anchor="middle" class="muted" font-size="11.5">Dedicated index.lock &amp; working tree</text>
 
     <rect x="386" y="236" width="270" height="86" rx="10" fill="url(#cyanCard)" stroke="#38bdf8" stroke-width="1.8"/>
-    <text x="521" y="264" text-anchor="middle" class="mono" font-size="14">.scion/worktrees/grpc-mig/</text>
+    <text x="521" y="264" text-anchor="middle" class="mono" font-size="12.5">.scion/agents/grpc-mig/workspace/</text>
     <text x="521" y="288" text-anchor="middle" class="sub" font-size="13">Branch: <tspan class="mono" fill="#86efac">scion/grpc-mig</tspan></text>
     <text x="521" y="308" text-anchor="middle" class="muted" font-size="11.5">Dedicated index.lock &amp; working tree</text>
   </g>

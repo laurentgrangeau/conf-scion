@@ -79,7 +79,7 @@
     <rect x="32" y="262" width="344" height="142" rx="12" fill="url(#blueCard)" stroke="#4285f4" stroke-width="2"/>
     <text x="204" y="294" text-anchor="middle" class="title" font-size="18" fill="#93c5fd">Cloud SQL (PostgreSQL)</text>
     <text x="204" y="320" text-anchor="middle" class="sub" font-size="13.5">Regional High Availability DB</text>
-    <text x="204" y="346" text-anchor="middle" class="muted" font-size="12.5">• Groves, Agents &amp; Users</text>
+    <text x="204" y="346" text-anchor="middle" class="muted" font-size="12.5">• Projects, Agents &amp; Users</text>
     <text x="204" y="368" text-anchor="middle" class="muted" font-size="12.5">• Broker Leases &amp; Audit Events</text>
     <text x="204" y="390" text-anchor="middle" class="mono" font-size="12">Private IP inside Shared VPC</text>
   </g>
